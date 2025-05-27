@@ -1,95 +1,127 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { fetchContentfulData } from "@/app/utils/fetchContentfulData";
 import styles from "./page.module.css";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+type Video = {
+  title: string;
+  slug: string;
+  tag: string;
+  thumbnailImg: {
+    url: string;
+  };
+  thumbnailVideo: {
+    url: string;
+  };
+  vimeoLink: string;
+};
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+export default function Home() {
+  const [videos, setVideos] = useState<Video[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const query = `
+        query{
+          videoListCollection(where: {title: "Video List"}, limit: 1){
+            items{
+              videosCollection{
+                items{
+                  ... on Video{
+                    title
+                    slug
+                    tag
+                    thumbnailImg{
+                      url
+                    }
+                    thumbnailVideo{
+                      url
+                    }
+                    vimeoLink
+                  }
+                }
+              }
+            }
+          }
+        }
+      `;
+      const { data, error } = await fetchContentfulData(query);
+
+      if (error) {
+        console.error("Error fetching video data:", error);
+      } else if (data && data.videoListCollection.items.length > 0) {
+        setVideos(data.videoListCollection.items[0].videosCollection.items);
+      } else {
+        console.error("Video data not found");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleMouseEnter = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      video.play().catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error("Error playing video:", err);
+        }
+      });
+    }
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      video.pause();
+      video.load();
+    }
+  };
+
+  return (
+    <main className={styles.main}>
+      <div className={styles.videoList}>
+        {videos.map((video, index) => (
+          <Link
+            href={`/work/${video.slug}`}
+            key={index}
+            className={styles.videoContainer}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={() => handleMouseLeave(index)}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <div className={styles.videoDescriptionContainer}>
+              <div className={styles.videoDescription}>
+                <div className={styles.videoTitleContainer}>
+                  <h2 className={styles.videoTitle}>{video.title}</h2>
+                </div>
+                <div className={styles.videoTagContainer}>
+                  <h3 className={styles.videoTag}>{video.tag}</h3>
+                </div>
+              </div>
+            </div>
+            <div className={styles.videoThumbnail}>
+              {video.thumbnailVideo ? (
+                <video
+                  ref={(el) => {
+                    videoRefs.current[index] = el;
+                  }}
+                  src={video.thumbnailVideo.url}
+                  poster={video.thumbnailImg.url}
+                  playsInline
+                  muted
+                  loop
+                  preload="auto"
+                />
+              ) : (
+                <Image src={video.thumbnailImg.url} alt={video.title} fill />
+              )}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </main>
   );
 }

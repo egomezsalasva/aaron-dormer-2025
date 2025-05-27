@@ -1,0 +1,73 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--header-height);
+  min-height: calc(100vh - var(--header-height));
+}
+
+.aboutContent {
+  display: flex;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+.aboutText {
+  width: 100%;
+}
+
+.aboutImage {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* Creates a square aspect ratio */
+}
+
+.aboutImage img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.leftContainer,
+.rightContainer {
+  width: 50%;
+}
+
+.rightContainer {
+  padding: 0 3rem;
+}
+
+.aboutText h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.aboutDescription p {
+  margin: 0.5rem 0;
+}
+
+.socialList {
+  display: flex;
+  margin-top: 1.25rem;
+}
+.socialList a {
+  padding: 0.625rem;
+}
+
+.socialList svg {
+  height: 1.5rem;
+  fill: #fff;
+  transition: fill 0.3s ease-in-out;
+}
+
+.socialList svg:hover {
+  fill: #d294e5;
+  transition: fill 0.3s ease-in-out;
+}
