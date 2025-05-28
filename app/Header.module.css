@@ -13,14 +13,46 @@
 
 .navList {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   list-style: none;
   text-transform: uppercase;
   width: 100%;
 }
 
+.navLeft,
+.navCenter,
+.navRight {
+  display: flex;
+  align-items: center;
+  width: 33%;
+}
+
+.navLeft {
+  justify-content: flex-start;
+}
+
+.navCenter {
+  justify-content: center;
+}
+
+.navRight {
+  justify-content: flex-end;
+  text-align: right;
+}
+
 .logo {
   padding: 0.25rem;
   height: var(--header-height);
+}
+
+@media (max-width: 1200px) {
+  .header {
+    padding: 0 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    font-size: 0.75rem;
+  }
 }

@@ -10,9 +10,21 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.navList}>
-        <NavLink href="/">{isVideoRoute ? "< Back" : "Selected Work"}</NavLink>
-        <img src="/aaron-logo.png" alt="Aaron Dormer" className={styles.logo} />
-        <NavLink href="/about">About // Contact</NavLink>
+        <div className={styles.navLeft}>
+          <NavLink href="/">
+            {isVideoRoute ? "< Back" : "Selected Work"}
+          </NavLink>
+        </div>
+        <div className={styles.navCenter}>
+          <img
+            src="/aaron-logo.png"
+            alt="Aaron Dormer"
+            className={styles.logo}
+          />
+        </div>
+        <div className={styles.navRight}>
+          <NavLink href="/about">About // Contact</NavLink>
+        </div>
       </div>
     </header>
   );

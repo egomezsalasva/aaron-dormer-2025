@@ -56,6 +56,7 @@
 .socialList {
   display: flex;
   margin-top: 1.25rem;
+  margin-bottom: 2.5rem;
 }
 .socialList a {
   padding: 0.625rem;
@@ -70,4 +71,26 @@
 .socialList svg:hover {
   fill: #d294e5;
   transition: fill 0.3s ease-in-out;
+}
+
+@media (max-width: 992px) {
+  .aboutContent {
+    flex-direction: column;
+    text-align: center;
+  }
+  .leftContainer,
+  .rightContainer {
+    width: 100%;
+    padding: 0 4rem;
+  }
+  .socialList {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .leftContainer,
+  .rightContainer {
+    padding: 0 2.5rem;
+  }
 }

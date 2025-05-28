@@ -99,3 +99,15 @@
   width: 100%;
   height: 100%;
 }
+
+@media (max-width: 1200px) {
+  .videoContainer {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .videoContainer {
+    width: 100%;
+  }
+}
