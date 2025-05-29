@@ -55,7 +55,7 @@ export default function VideoPage() {
             playing={true}
             config={{
               playerOptions: {
-                color: "000000",
+                color: "0a0a0a",
                 autoplay: true,
                 byline: false,
                 portrait: false,
