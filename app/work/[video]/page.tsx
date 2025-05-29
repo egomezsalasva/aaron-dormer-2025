@@ -4,7 +4,7 @@ import { fetchContentfulData } from "@/app/utils/fetchContentfulData";
 import styles from "./page.module.css";
 
 type Props = {
-  params: { video: string };
+  params: Promise<{ video: string }>;
 };
 
 const query = `
@@ -19,8 +19,9 @@ const query = `
 `;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { video } = await params;
   const { data, error } = await fetchContentfulData(query, {
-    slug: params.video,
+    slug: video,
   });
   if (error) {
     return {
