@@ -1,9 +1,7 @@
 .active {
-  color: var(--pink);
   opacity: 1;
 }
 
 .inactive {
-  font-weight: 400;
   opacity: 0.5;
 }
