@@ -77,7 +77,7 @@ export default function Home() {
     const video = videoRefs.current[index];
     if (video) {
       video.pause();
-      // video.load();
+      video.load();
     }
   };
 

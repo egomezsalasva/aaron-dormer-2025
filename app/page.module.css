@@ -111,3 +111,10 @@
     width: 100%;
   }
 }
+
+@media (orientation: landscape) and (max-width: 768px) {
+  .videoContainer {
+    height: calc((100vh - var(--header-height)) / 2);
+    min-height: 300px;
+  }
+}
