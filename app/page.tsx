@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Videos from "./home/Videos";
 import styles from "./page.module.css";
 import { fetchContentfulData } from "./utils/fetchContentfulData";
+import { metadataFallback } from "./utils/metadataFallback";
 
 const query = `
 query {
@@ -17,11 +18,7 @@ query {
 export async function generateMetadata(): Promise<Metadata> {
   const { data, error } = await fetchContentfulData(query);
   if (error) {
-    return {
-      title: "Aaron Dormer",
-      description:
-        "Explore a curated selection of Aaron Dormer's acclaimed commercials, music videos, and short films that showcase his unique visual storytelling and artistic vision.",
-    };
+    return metadataFallback;
   }
   const pageData = data.videoListCollection.items[0];
   return {
